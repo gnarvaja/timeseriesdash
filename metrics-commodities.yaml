@@ -1,0 +1,56 @@
+default_oa2_credentials: google_guillon
+data_dir: site/data/
+default_period_type: month
+js_metrics: site/js/site_metrics.js
+pills:
+ - key: datos_base
+   name: Inflación / Dólar
+   template: templates/datosbase.html
+ - key: soja
+   name: Ventas KM5
+   template: templates/commodities.html
+   commoditie_name: soja
+   active: true
+oauth2_auths:
+  - name: google_guillon
+    client_secrets: client_secrets.json
+    oauth2_storage: oauth2.dat
+    scope: https://spreadsheets.google.com/feeds
+period_choices:
+ - name: Mes
+   value: 1
+ - name: Bimestre
+   value: 2
+ - name: Trimestre
+   value: 3
+ - name: Cuatrimestre
+   value: 4
+ - name: Semestre
+   value: 6
+ - name: Año
+   value: 12
+metrics:
+ - name: dolar
+   visible_name: Dólar
+   type: googlespread
+   spreadsheet: DatosHackatonMP2016
+   data_column: 2
+ - name: inflacion
+   visible_name: Inflación
+   type: googlespread
+   spreadsheet: DatosHackatonMP2016
+   data_column: 5
+ - name: soja_int
+   visible_name: Soja Precio Internacional (u$s)
+   type: googlespread
+   spreadsheet: DatosHackatonMP2016
+   data_column: 3
+ - name: retencion_soja
+   visible_name: Porcentaje Retención Soja
+   type: googlespread
+   spreadsheet: DatosHackatonMP2016
+   data_column: 4
+ - name: soja_pesos
+   visible_name: Soja Pesos Corrientes
+   type: calculated
+   formula: soja_int * dolar * (100.0 - retencion_soja)
