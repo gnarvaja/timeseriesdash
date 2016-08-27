@@ -25,10 +25,11 @@
 <div class="row">
   <div class="col-md-12">
     <canvas id="line" class="chart chart-line"
-      chart-data="get_chart_data(['dolar', 'inflacion_h', 'inflacion_accum_h'])"
-      chart-labels="get_chart_labels(['dolar', 'inflacion_h', 'inflacion_accum_h'])"
-      chart-series="get_chart_series(['dolar', 'inflacion_h', 'inflacion_accum_h'])"
+      chart-data="get_chart_data(['dolar', 'inflacion_accum_h', 'inflacion_h'])"
+      chart-labels="get_chart_labels(['dolar', 'inflacion_accum_h', 'inflacion_h'])"
+      chart-series="get_chart_series(['dolar', 'inflacion_accum_h', 'inflacion_h'])"
       chart-dataset-override="constants.chart_datasetOverride"
+      chart-colors="[ '#0000ff ', '#ff0000 ', '#00ff00 ']"
       chart-options="constants.chart_options"
       >
     </canvas>

@@ -14,4 +14,7 @@ pip install -r deps.txt
 sudo apt-get install nodejs-legacy
 sudo apt-get install npm
 sudo npm install -g bower
-bower install bower.json
+bower install bower.json 
+
+python generate.py metrics-commodities.yaml 2010-01-01 2016-07-31 
+

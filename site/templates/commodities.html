@@ -13,23 +13,24 @@
 </div>
 <div class="row">
   <div class="col-md-4">
-    <thumbwidget metric="getMetric('soja_int')"/>
+    <thumbwidget metric="getMetric(pill.commoditie_name + '_int')"/>
   </div>
   <div class="col-md-4">
-    <thumbwidget metric="getMetric('soja_pesos')"/>
+    <thumbwidget metric="getMetric(pill.commoditie_name + '_pesos')"/>
   </div>
   <div class="col-md-4">
-    <thumbwidget metric="getMetric('soja_pesos_real')"/>
+    <thumbwidget metric="getMetric(pill.commoditie_name + '_pesos_real')"/>
   </div>
 </div>
 <div class="row">
   <div class="col-md-12">
     <canvas id="line" class="chart chart-line"
-            chart-data="get_chart_data(['soja_pesos_real','soja_pesos','soja_int'])"
-            chart-labels="get_chart_labels(['soja_pesos_real','soja_pesos','soja_int'])"
-            chart-series="get_chart_series(['soja_pesos_real','soja_pesos','soja_int'])"
+            chart-data="get_chart_data([pill.commoditie_name + '_pesos_real', pill.commoditie_name + '_pesos', pill.commoditie_name + '_int'])"
+            chart-labels="get_chart_labels([pill.commoditie_name + '_pesos_real', pill.commoditie_name + '_pesos', pill.commoditie_name + '_int'])"
+            chart-series="get_chart_series([pill.commoditie_name + '_pesos_real', pill.commoditie_name + '_pesos', pill.commoditie_name + '_int'])"
             chart-dataset-override="constants.chart_datasetOverride"
             chart-options="constants.chart_options"
+            chart-colors="[ '#0000ff ', '#ff0000 ', '#00ff00 ']"
     >
     </canvas>
   </div>

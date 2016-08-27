@@ -8,6 +8,10 @@ pills:
    template: templates/commodities.html
    commoditie_name: soja
    active: true
+ - key: maiz
+   name: Maíz
+   template: templates/commodities.html
+   commoditie_name: maiz
  - key: datos_base
    name: Inflación / Dólar
    template: templates/datos_base.html
@@ -71,6 +75,20 @@ metrics:
    filter_column: 1
    filter_value: Poroto de Soja
    reuse: true
+ - name: maiz_int_xdia
+   visible_name: Maíz Precio Internacional (u$s) x día
+   period_type: day
+   type: csv
+   filename: data/commodities.csv
+   date_column: 2
+   data_column: 3
+   filter_column: 1
+   filter_value: Maiz
+   reuse: true
+ - name: maiz_int
+   visible_name: Maíz Precio Internacional (u$s)
+   type: daytomonth
+   source: maiz_int_xdia
  - name: soja_int
    visible_name: Soja Precio Internacional (u$s)
    type: daytomonth
@@ -81,13 +99,25 @@ metrics:
    spreadsheet: Retenciones
    data_column: 2
    reuse: true
+ - name: retencion_maiz
+   visible_name: Porcentaje Retención Maiz
+   type: googlespread
+   spreadsheet: Retenciones
+   data_column: 3
+   reuse: true
  - name: soja_pesos
    visible_name: Soja Pesos Corrientes (en  puerto)
    type: calculated
    formula: soja_int * dolar * (1.0 - retencion_soja)
-   reuse: true
  - name: soja_pesos_real
    visible_name: Soja Pesos Constantes
    type: calculated
    formula: soja_pesos / inflacion_accum
-   reuse: true
+ - name: maiz_pesos
+   visible_name: Maíz Pesos Corrientes (en  puerto)
+   type: calculated
+   formula: maiz_int * dolar * (1.0 - retencion_maiz)
+ - name: maiz_pesos_real
+   visible_name: Maíz Pesos Constantes
+   type: calculated
+   formula: maiz_pesos / inflacion_accum
