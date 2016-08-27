@@ -1,0 +1,38 @@
+<div class="row navbar">
+  <div class="col-md-4">
+    <select class="form-control" ng-model="$parent.$parent.periods_text" ng-change="refresh()">
+      <option ng-repeat="choice in periodChoices" value="{{choice.value}}">{{choice.name}}</option>
+    </select>
+  </div>
+  <div class="col-md-8">
+    <div class="navbar-form" role="search">
+      <div ui-slider min="0" max="30" ng-model="$parent.$parent.periods_back"></div>
+      <span class="pull-right badge">{{ metrics[0].get_current_period() }}</span>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <thumbwidget metric="getMetric('presupuesto' + pill.metric_suffix)"
+        up-down-policy="none" precision="3" badge-policy="none"/>
+  </div>
+  <div class="col-md-4">
+    <thumbwidget metric="getMetric('sales' + pill.metric_suffix)" precision="3"
+        up-down-policy="last_year" badge-policy="last_year"/>
+  </div>
+  <div class="col-md-4">
+    <thumbwidget metric="getMetric('ventas_vs_presupuesto' + pill.metric_suffix)" show-thumb="true" precision="0"
+        is-percentage="true" badge-policy="none" up-down-policy="percentage"/>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <canvas id="line" class="chart chart-line"
+      chart-data="get_chart_data(['presupuesto' + pill.metric_suffix, 'sales' + pill.metric_suffix, 'ventas_vs_presupuesto' + pill.metric_suffix])"
+      chart-labels="get_chart_labels(['presupuesto' + pill.metric_suffix, 'sales' + pill.metric_suffix, 'ventas_vs_presupuesto' + pill.metric_suffix])"
+      chart-series="get_chart_series(['presupuesto' + pill.metric_suffix, 'sales' + pill.metric_suffix, 'ventas_vs_presupuesto' + pill.metric_suffix])"
+      chart-dataset-override="constants.chart_datasetOverride"
+      chart-options="constants.chart_options"
+      >
+    </canvas>
+</div>

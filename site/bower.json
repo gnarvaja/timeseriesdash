@@ -1,0 +1,40 @@
+{
+  "name": "Dashboard",
+  "version": "0.1.0",
+  "description": "Dashboard",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.5.8",
+    "angular-bootstrap": "~0.14.3",
+    "angular-chart": "~0.5.0",
+    "angular-chart.js": "~1.0.0",
+    "angular-charts": "~0.2.7",
+    "angular-i18n": "~1.5.8",
+    "angular-local-storage": "~0.2.3",
+    "angular-morris-chart": "~1.2.0",
+    "angular-ui-slider": "~0.3.2",
+    "bootstrap": "~3.3.5",
+    "d3": "~3.5.6",
+    "font-awesome": "fontawesome#~4.4.0",
+    "morris.js": "morrisjs#~0.5.1",
+    "underscore": "~1.8.3",
+    "chart.js": "npm:chart.js#^2.2.1",
+    "moment": "^2.14.1"
+  },
+  "resolutions": {
+    "d3": "~3.5.6",
+    "angular": "~1.5.8",
+    "webcomponentsjs": "0.7.20",
+    "angular-morris-chart": "~1.2.0",
+    "angular-ui-slider": "~0.3.2",
+    "angular-chart.js": "~1.0.0",
+    "Chart.js": "2.x"
+  }
+}

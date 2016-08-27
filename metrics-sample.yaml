@@ -1,0 +1,123 @@
+default_database: fierrodb
+default_oa2_credentials: google_guillon
+data_dir: site/data/
+js_metrics: site/js/site_metrics.js
+remotes:
+ - name: canalete
+   configname: canalete
+pills:
+ - key: ventas_km5
+   name: Ventas KM5
+   template: templates/ventas_uninorte.html
+   metric_suffix: _km5
+   active: true
+ - key: ventas_dunord
+   name: Ventas DuNord
+   template: templates/ventas_uninorte.html
+   metric_suffix: _dunord
+ - key: ventas_mapuka
+   name: Ventas Mapuka
+   template: templates/ventas_uninorte.html
+   metric_suffix: _mapuka
+ - key: ventas_totales
+   name: Ventas Totales
+   template: templates/ventas_uninorte.html
+   metric_suffix: ""
+ - key: pedidos
+   name: Pedidos
+   template: templates/pedidos_uninorte.html
+oauth2_auths:
+  - name: google_guillon
+    client_secrets: client_secrets.json
+    oauth2_storage: oauth2.dat
+    scope: https://spreadsheets.google.com/feeds
+databases:
+ - name: fierrodb
+   dbname: fierrodb
+   user: fierro
+   host: hiraca
+   remote: canalete
+period_choices:
+ - name: Mes
+   value: 1
+ - name: Bimestre
+   value: 2
+ - name: Trimestre
+   value: 3
+ - name: Cuatrimestre
+   value: 4
+ - name: Semestre
+   value: 6
+ - name: Año
+   value: 12
+metrics:
+ - name: presupuesto_dunord
+   visible_name: Presupuesto Du Nord Store
+   period: month
+   type: googlespread
+   spreadsheet: Presupuesto Uninorte
+   data_column: 2
+ - name: presupuesto_km5
+   visible_name: Presupuesto KM5
+   period: month
+   type: googlespread
+   spreadsheet: Presupuesto Uninorte
+   data_column: 3
+ - name: presupuesto_mapuka
+   visible_name: Presupuesto Mapuka
+   period: month
+   type: googlespread
+   spreadsheet: Presupuesto Uninorte
+   data_column: 4
+ - name: sales_km5
+   visible_name: Ventas KM5
+   type: sales
+   period: month
+   sucursal: SUC1
+   sum_type: sum
+ - name: sales_dunord
+   visible_name: Ventas du Nord Store
+   type: sales
+   period: month
+   sucursal: SUC2
+   sum_type: sum
+ - name: sales_mapuka
+   visible_name: Ventas Mapuka
+   type: sales
+   period: month
+   sucursal: SUC5
+   sum_type: sum
+ - name: sales
+   visible_name: Ventas Totales
+   type: aggregate
+   aggregate_type: sum
+   variables: sales_.*
+ - name: presupuesto
+   visible_name: Presupuesto Total
+   type: aggregate
+   aggregate_type: sum
+   variables: presupuesto_.*
+ - name: ventas_vs_presupuesto_dunord
+   visible_name: Cumplimiento Presupuesto Du Nord Store
+   type: calculated
+   period: month
+   formula: sales_dunord / presupuesto_dunord * 100.0
+   zero_division_default: 0
+ - name: ventas_vs_presupuesto_km5
+   visible_name: Cumplimiento Presupuesto KM5
+   type: calculated
+   period: month
+   formula: sales_km5 / presupuesto_km5 * 100.0
+   zero_division_default: 0
+ - name: ventas_vs_presupuesto_mapuka
+   visible_name: Cumplimiento Presupuesto Mapuka
+   type: calculated
+   period: month
+   formula: sales_mapuka / presupuesto_mapuka * 100.0
+   zero_division_default: 0
+ - name: ventas_vs_presupuesto
+   visible_name: Cumplimiento Presupuesto Total
+   type: calculated
+   period: month
+   formula: sales / presupuesto * 100.0
+   zero_division_default: 0

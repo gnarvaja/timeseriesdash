@@ -1,0 +1,7 @@
+psycopg2
+PyYAML
+paramiko
+sshtunnel
+python-dateutil
+gspread
+oauth2client

@@ -1,0 +1,150 @@
+/* green */
+.panel-green {
+    border-color: #5cb85c;
+}
+
+.panel-green .panel-heading {
+    border-color: #5cb85c;
+    color: #fff;
+    background-color: #5cb85c;
+}
+
+.panel-green a {
+    color: #5cb85c;
+}
+
+.panel-green a:hover {
+    color: #3d8b3d;
+}
+
+.btn-green {
+    border-color: #5cb85c;
+    background-color: #5cb85c;
+    color: #fff;
+}
+
+/* red */
+.panel-red {
+    border-color: #d9534f;
+}
+
+.panel-red .panel-heading {
+    border-color: #d9534f;
+    color: #fff;
+    background-color: #d9534f;
+}
+
+.panel-red a {
+    color: #d9534f;
+}
+
+.panel-red a:hover {
+    color: #b52b27;
+}
+
+.btn-red {
+    border-color: #d9534f;
+    background-color: #d9534f;
+    color: #fff;
+}
+
+/* yellow */
+.panel-yellow {
+    border-color: #f0ad4e;
+}
+
+.panel-yellow .panel-heading {
+    border-color: #f0ad4e;
+    color: #fff;
+    background-color: #f0ad4e;
+}
+
+.panel-yellow a {
+    color: #f0ad4e;
+}
+
+.panel-yellow a:hover {
+    color: #df8a13;
+}
+
+.btn-yellow {
+    border-color: #f0ad4e;
+    background-color: #f0ad4e;
+    color: #fff;
+}
+
+/* cyan */
+.panel-cyan {
+    border-color: #00FFFF;
+}
+
+.panel-cyan .panel-heading {
+    border-color: #00FFFF;
+    color: #fff;
+    background-color: #00FFFF;
+}
+
+.panel-cyan a {
+    color: #00FFFF;
+}
+
+.panel-cyan a:hover {
+    color: #008B8B;
+}
+
+.btn-cyan {
+    border-color: #00FFFF;
+    background-color: #00FFFF;
+    color: #fff;
+}
+
+/* orange */
+.panel-orange {
+    border-color: #FFA500;
+}
+
+.panel-orange .panel-heading {
+    border-color: #FFA500;
+    color: #fff;
+    background-color: #FFA500;
+}
+
+.panel-orange a {
+    color: #FFA500;
+}
+
+.panel-orange a:hover {
+    color: #FF4500;
+}
+
+.btn-orange {
+    border-color: #FFA500;
+    background-color: #FFA500;
+    color: #fff;
+}
+
+/* brown */
+.panel-brown {
+    border-color: #D2691E;
+}
+
+.panel-brown .panel-heading {
+    border-color: #D2691E;
+    color: #fff;
+    background-color: #D2691E;
+}
+
+.panel-brown a {
+    color: #D2691E;
+}
+
+.panel-brown a:hover {
+    color: #A52A2A;
+}
+
+.btn-brown {
+    border-color: #D2691E;
+    background-color: #D2691E;
+    color: #fff;
+}
+
