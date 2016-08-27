@@ -3,14 +3,14 @@ data_dir: site/data/
 default_period_type: month
 js_metrics: site/js/site_metrics.js
 pills:
- - key: datos_base
-   name: Inflación / Dólar
-   template: templates/datos_base.html
  - key: soja
-   name: Ventas KM5
+   name: Soja
    template: templates/commodities.html
    commoditie_name: soja
    active: true
+ - key: datos_base
+   name: Inflación / Dólar
+   template: templates/datos_base.html
 oauth2_auths:
   - name: google_guillon
     client_secrets: client_secrets.json
@@ -30,22 +30,28 @@ period_choices:
  - name: Año
    value: 12
 metrics:
- - name: dolar
-   visible_name: Dólar
-   type: googlespread
-   spreadsheet: DatosHackatonMP2016
-   data_column: 2
-   reuse: true
  - name: inflacion
    visible_name: Inflación
-   type: googlespread
-   spreadsheet: DatosHackatonMP2016
-   data_column: 5
-   reuse: true
+   type: csv
+   filename: data/ipc.csv
+   skip_rows: 1
+   data_column: 3
+   date_column: 2
  - name: inflacion_h
    visible_name: Inflación %
    type: calculated
    formula: inflacion * 100.0
+ - name: dolarxdia
+   visible_name: Dólar x día
+   type: googlespread
+   period_type: day
+   spreadsheet: DolarBCRAxDIA
+   data_column: 2
+   reuse: true
+ - name: dolar
+   visible_name: Dólar
+   type: daytomonth
+   source: dolarxdia
  - name: inflacion_accum
    variables: inflacion
    visible_name: Inflación Acumulada
@@ -55,20 +61,33 @@ metrics:
    visible_name: Inflación Acumulada %
    type: calculated
    formula: inflacion_accum * 100.0 - 100.0
+ - name: soja_int_xdia
+   visible_name: Soja Precio Internacional (u$s) x día
+   period_type: day
+   type: csv
+   filename: data/commodities.csv
+   date_column: 2
+   data_column: 3
+   filter_column: 1
+   filter_value: Poroto de Soja
+   reuse: true
  - name: soja_int
    visible_name: Soja Precio Internacional (u$s)
-   type: googlespread
-   spreadsheet: DatosHackatonMP2016
-   data_column: 3
-   reuse: true
+   type: daytomonth
+   source: soja_int_xdia
  - name: retencion_soja
    visible_name: Porcentaje Retención Soja
    type: googlespread
-   spreadsheet: DatosHackatonMP2016
-   data_column: 4
+   spreadsheet: Retenciones
+   data_column: 2
    reuse: true
  - name: soja_pesos
-   visible_name: Soja Pesos Corrientes
+   visible_name: Soja Pesos Corrientes (en  puerto)
    type: calculated
-   formula: soja_int * dolar * (100.0 - retencion_soja)
+   formula: soja_int * dolar * (1.0 - retencion_soja)
+   reuse: true
+ - name: soja_pesos_real
+   visible_name: Soja Pesos Constantes
+   type: calculated
+   formula: soja_pesos / inflacion_accum
    reuse: true

@@ -5,7 +5,7 @@ import string
 import parser
 import math  # noqa
 from plugins.base import Metric
-from utils import read_data, get_metric_names, ensure_date
+from utils import read_data, get_metric_names, ensure_date, generate_date_series
 
 
 def extract_variables(expression):
@@ -150,6 +150,26 @@ class AggregateMetric(Metric):
             data.append({"label": label, "data": d})
 
         return data
+
+
+class ChangePeriodMetric(Metric):
+    metric_type = "daytomonth"
+
+    def generate(self, ffrom, tto):
+        source = self.config["source"]
+
+        source_data = read_data(source, self.global_config)
+
+        ret = []
+        for month in generate_date_series(ffrom, tto, self.get_period_type()):
+            label = month.strftime("%Y-%m-%d")
+            datas = [d["data"] for d in source_data if d["label"][:7] == label[:7] and d["data"]]
+            if datas:
+                data = sum(datas) / len(datas)
+            else:
+                data = 0
+            ret.append({"label": label, "data": data})
+        return ret
 
 
 class RebaseMetric(Metric):

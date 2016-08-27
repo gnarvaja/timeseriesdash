@@ -19,15 +19,15 @@
     <thumbwidget metric="getMetric('soja_pesos')"/>
   </div>
   <div class="col-md-4">
-    <thumbwidget metric="getMetric('soja_pesos_reales')"/>
+    <thumbwidget metric="getMetric('soja_pesos_real')"/>
   </div>
 </div>
 <div class="row">
   <div class="col-md-12">
     <canvas id="line" class="chart chart-line"
-            chart-data="get_chart_data(['soja_pesos','soja_pesos_reales','soja_int'])"
-            chart-labels="get_chart_labels(['soja_pesos','soja_pesos_reales','soja_int'])"
-            chart-series="get_chart_series(['soja_pesos','soja_pesos_reales','soja_int'])"
+            chart-data="get_chart_data(['soja_pesos_real','soja_pesos','soja_int'])"
+            chart-labels="get_chart_labels(['soja_pesos_real','soja_pesos','soja_int'])"
+            chart-series="get_chart_series(['soja_pesos_real','soja_pesos','soja_int'])"
             chart-dataset-override="constants.chart_datasetOverride"
             chart-options="constants.chart_options"
     >
