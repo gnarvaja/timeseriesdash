@@ -1,10 +1,12 @@
 metrics = [
-    new Metric("Dólar", "bar-chart", "dolar", "brown", "month"),
-    new Metric("Inflación", "bar-chart", "inflacion", "primary", "month"),
-    new Metric("Inflación Acumulada", "bar-chart", "inflacion_accum", "green", "month"),
-    new Metric("Soja Precio Internacional (u$s)", "bar-chart", "soja_int", "brown", "month"),
-    new Metric("Porcentaje Retención Soja", "bar-chart", "retencion_soja", "primary", "month"),
-    new Metric("Soja Pesos Corrientes", "bar-chart", "soja_pesos", "orange", "month"),
+    new Metric("Dólar", "bar-chart", "dolar", "primary", "month"),
+    new Metric("Inflación", "bar-chart", "inflacion", "red", "month"),
+    new Metric("Inflación %", "bar-chart", "inflacion_h", "cyan", "month"),
+    new Metric("Inflación Acumulada", "bar-chart", "inflacion_accum", "orange", "month"),
+    new Metric("Inflación Acumulada %", "bar-chart", "inflacion_accum_h", "brown", "month"),
+    new Metric("Soja Precio Internacional (u$s)", "bar-chart", "soja_int", "cyan", "month"),
+    new Metric("Porcentaje Retención Soja", "bar-chart", "retencion_soja", "yellow", "month"),
+    new Metric("Soja Pesos Corrientes", "bar-chart", "soja_pesos", "red", "month"),
 ];
 
 

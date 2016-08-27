@@ -5,7 +5,7 @@ Dependencias
 ============
 
 sudo apt-get install libyaml-dev libpython2.7-dev
-sudo apt-get install postgresql-server-9.3-dev
+sudo apt-get install postgresql-server-9.3-dev libffi-dev
 
 virtualenv .
 source bin/activate

@@ -130,9 +130,13 @@ def parse_float(x):
     123123.0
     >>> parse_float("123.12")
     123.12
+    >>> parse_float("123 %")
+    1.23
     """
     if isinstance(x, basestring):
         x = x.replace("$", "").strip()
+        if "%" in x:
+            return parse_float(x.replace("%", "")) / 100.0
         if "." in x and "," in x:
             if x.index(",") < x.index("."):
                 # , es el separador de miles y . de decimales

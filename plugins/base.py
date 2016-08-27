@@ -35,16 +35,9 @@ class Metric(object):
             "period_type": self.get_period_type()
         }
 
-
-class DBMetric(Metric):
-    def __init__(self, *args, **kargs):
-        super(DBMetric, self).__init__(*args, **kargs)
-        dbname = self.config.get("database", self.global_config.get("default_database"))
-        self.db = DBFactory.get_db(self.global_config, dbname)
-
     def _reused_data(self, ffrom, tto):
         reuse = self.config.get("reuse", False)
-        period_type = self.config["period"]
+        period_type = self.get_period_type()
         if reuse:
             old_data = read_data(self.name, self.global_config)
             ret = dict((parse_date(v["label"]).date(), v["data"]) for v in old_data)
@@ -59,3 +52,11 @@ class DBMetric(Metric):
             new_tto = tto
             ret = {}
         return ret, new_ffrom, new_tto
+
+
+class DBMetric(Metric):
+    def __init__(self, *args, **kargs):
+        super(DBMetric, self).__init__(*args, **kargs)
+        dbname = self.config.get("database", self.global_config.get("default_database"))
+        self.db = DBFactory.get_db(self.global_config, dbname)
+

@@ -16,18 +16,18 @@
     <thumbwidget metric="getMetric('dolar')"/>
   </div>
   <div class="col-md-4">
-    <thumbwidget metric="getMetric('inflacion')"/>
+    <thumbwidget metric="getMetric('inflacion_h')"/>
   </div>
   <div class="col-md-4">
-    <thumbwidget metric="getMetric('inflacion_accum')"/>
+    <thumbwidget metric="getMetric('inflacion_accum_h')"/>
   </div>
 </div>
 <div class="row">
   <div class="col-md-12">
     <canvas id="line" class="chart chart-line"
-      chart-data="get_chart_data(['dolar', 'inflacion'])"
-      chart-labels="get_chart_labels(['dolar', 'inflacion'])"
-      chart-series="get_chart_series(['dolar', 'inflacion'])"
+      chart-data="get_chart_data(['dolar', 'inflacion_h', 'inflacion_accum_h'])"
+      chart-labels="get_chart_labels(['dolar', 'inflacion_h', 'inflacion_accum_h'])"
+      chart-series="get_chart_series(['dolar', 'inflacion_h', 'inflacion_accum_h'])"
       chart-dataset-override="constants.chart_datasetOverride"
       chart-options="constants.chart_options"
       >

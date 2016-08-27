@@ -144,6 +144,7 @@ class AggregateMetric(Metric):
             elif aggregate_type == "percent_accum":
                 # Acumula porcentajes
                 d = initial * (1.0 + datas[var_names[0]][i]["data"])
+                initial = d
             elif aggregate_type == "count":
                 d = len(var_names)
             data.append({"label": label, "data": d})

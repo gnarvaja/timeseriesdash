@@ -5,7 +5,7 @@ js_metrics: site/js/site_metrics.js
 pills:
  - key: datos_base
    name: Inflación / Dólar
-   template: templates/datosbase.html
+   template: templates/datos_base.html
  - key: soja
    name: Ventas KM5
    template: templates/commodities.html
@@ -35,22 +35,40 @@ metrics:
    type: googlespread
    spreadsheet: DatosHackatonMP2016
    data_column: 2
+   reuse: true
  - name: inflacion
    visible_name: Inflación
    type: googlespread
    spreadsheet: DatosHackatonMP2016
    data_column: 5
+   reuse: true
+ - name: inflacion_h
+   visible_name: Inflación %
+   type: calculated
+   formula: inflacion * 100.0
+ - name: inflacion_accum
+   variables: inflacion
+   visible_name: Inflación Acumulada
+   type: aggregate
+   aggregate_type: percent_accum
+ - name: inflacion_accum_h
+   visible_name: Inflación Acumulada %
+   type: calculated
+   formula: inflacion_accum * 100.0 - 100.0
  - name: soja_int
    visible_name: Soja Precio Internacional (u$s)
    type: googlespread
    spreadsheet: DatosHackatonMP2016
    data_column: 3
+   reuse: true
  - name: retencion_soja
    visible_name: Porcentaje Retención Soja
    type: googlespread
    spreadsheet: DatosHackatonMP2016
    data_column: 4
+   reuse: true
  - name: soja_pesos
    visible_name: Soja Pesos Corrientes
    type: calculated
    formula: soja_int * dolar * (100.0 - retencion_soja)
+   reuse: true
