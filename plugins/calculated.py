@@ -129,6 +129,7 @@ class AggregateMetric(Metric):
             elif data_len != len(datas[var]):
                 raise RuntimeError("Error la longitud de los datos de la variable %s"
                                    " no coincide con las precedentes" % var)
+        initial = 1.0
         for i in range(data_len):
             var_names = datas.keys()
             labels = set(datas[v][i]["label"] for v in var_names)
@@ -140,6 +141,9 @@ class AggregateMetric(Metric):
                 d = sum([datas[v][i]["data"] for v in var_names]) / float(len(var_names))
             elif aggregate_type == "sum":
                 d = sum([datas[v][i]["data"] for v in var_names])
+            elif aggregate_type == "percent_accum":
+                # Acumula porcentajes
+                d = initial * (1.0 + datas[var_names[0]][i]["data"])
             elif aggregate_type == "count":
                 d = len(var_names)
             data.append({"label": label, "data": d})
