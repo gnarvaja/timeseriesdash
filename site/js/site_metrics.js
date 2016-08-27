@@ -7,12 +7,13 @@ metrics = [
     new Metric("Soja Precio Internacional (u$s)", "bar-chart", "soja_int", "cyan", "month"),
     new Metric("Porcentaje Retención Soja", "bar-chart", "retencion_soja", "yellow", "month"),
     new Metric("Soja Pesos Corrientes", "bar-chart", "soja_pesos", "red", "month"),
+    new Metric("Soja Pesos Reales", "bar-chart", "soja_pesos_reales", "green", "month"),
 ];
 
 
 pills = [
 jQuery.parseJSON('{"name": "Inflaci\u00f3n / D\u00f3lar", "key": "datos_base", "template": "templates/datos_base.html"}'),
-jQuery.parseJSON('{"active": true, "template": "templates/commodities.html", "commoditie_name": "soja", "key": "soja", "name": "Ventas KM5"}'),
+jQuery.parseJSON('{"active": true, "name": "Soja", "key": "soja", "template": "templates/commodities.html"}'),
 ];
 
 periodChoices = [

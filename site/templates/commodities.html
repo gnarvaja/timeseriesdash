@@ -1,0 +1,36 @@
+<div class="row navbar">
+  <div class="col-md-4">
+    <select class="form-control" ng-model="$parent.$parent.periods_text" ng-change="refresh()">
+      <option ng-repeat="choice in periodChoices" value="{{choice.value}}">{{choice.name}}</option>
+    </select>
+  </div>
+  <div class="col-md-8">
+    <div class="navbar-form" role="search">
+      <div ui-slider min="0" max="30" ng-model="$parent.$parent.periods_back"></div>
+      <span class="pull-right badge">{{ metrics[0].get_current_period() }}</span>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <thumbwidget metric="getMetric('soja_int')"/>
+  </div>
+  <div class="col-md-4">
+    <thumbwidget metric="getMetric('soja_pesos')"/>
+  </div>
+  <div class="col-md-4">
+    <thumbwidget metric="getMetric('soja_pesos_reales')"/>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <canvas id="line" class="chart chart-line"
+            chart-data="get_chart_data(['soja_pesos','soja_pesos_reales','soja_int'])"
+            chart-labels="get_chart_labels(['soja_pesos','soja_pesos_reales','soja_int'])"
+            chart-series="get_chart_series(['soja_pesos','soja_pesos_reales','soja_int'])"
+            chart-dataset-override="constants.chart_datasetOverride"
+            chart-options="constants.chart_options"
+    >
+    </canvas>
+  </div>
+</div>
