@@ -12,7 +12,7 @@ function Metric(name, icon, key, color, period_type) {
   };
   this.period_type = period_type;
 
-  this.get_data_url = function () { return "data/" + self.key + ".json"; }
+  this.get_data_url = function () { return window.datadir + "/" + self.key + ".json"; }
 
   this.is_loading = function () { return self.data === undefined; }
 

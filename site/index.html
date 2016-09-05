@@ -24,9 +24,16 @@
   <script type="text/javascript" src="bower_components/chart.js/dist/Chart.min.js"></script>
   <script type="text/javascript" src="bower_components/angular-chart.js/dist/angular-chart.min.js"></script>
 
+  <script type="text/javascript" src="js/utils.js"></script>
   <script type="text/javascript" src="js/metrics.js"></script>
-  <script type="text/javascript" src="js/settings.js"></script>
-  <script type="text/javascript" src="js/site_metrics.js"></script>
+  <script type="text/javascript">
+  var project = Utils.getHashParameterByName("project") || "",
+      jsdir = project ? "js-" + project : "js",
+      datadir = project ? "data-" + project : "data";
+  window.datadir = datadir;
+  document.write('<script type="text/javascript" src="' + jsdir +  '/settings.js"><' + '/script>');
+  document.write('<script type="text/javascript" src="' + jsdir + '/site_metrics.js"><' + '/script>');
+  </script>
   <script type="text/javascript" src="js/app.js"></script>
 
 </head>
