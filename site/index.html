@@ -27,7 +27,7 @@
   <script type="text/javascript" src="js/utils.js"></script>
   <script type="text/javascript" src="js/metrics.js"></script>
   <script type="text/javascript">
-  var project = Utils.getHashParameterByName("project") || "",
+  var project = Utils.getParameterByName("project") || "",
       jsdir = project ? "js-" + project : "js",
       datadir = project ? "data-" + project : "data";
   window.datadir = datadir;

@@ -63,7 +63,8 @@ class DBFactory:
 
     @classmethod
     def close_all(klass):
-        for db_name in klass._db_cache.keys():
+        db_names = list(klass._db_cache.keys())
+        for db_name in db_names:
             klass._db_cache[db_name].close()
             del klass._db_cache[db_name]
 

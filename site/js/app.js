@@ -102,16 +102,26 @@ app.controller("ComparativeMetricsCtrl", function ($scope, $http, localStorageSe
     return _.find($scope.metrics, function (m) { return m.key == metricKey; });
   };
 
+  $scope.expand_metric_names = function (metric_names) {
+    if (_.isArray(metric_names))
+      return metric_names;
+    var regexp = new RegExp(metric_names);
+    var ret = _.pluck(_.filter($scope.metrics, function (m) { return m.key.match(regexp) !== null; }),
+                      "key");
+    return ret;
+  };
+
   $scope.save = function () {
     localStorageService.set("period_count", $scope.period_count);
     localStorageService.set("periods_back", $scope.periods_back);
     localStorageService.set("disabled_metrics", _.map(_.filter($scope.metrics, function (metric) { return !metric.enabled; }),
                                                               function (metric) { return metric.key }));
-  }
+  };
 
   $scope.refresh = function () {
     $scope.period_count = parseInt($scope.periods_text);
-  }
+  };
+
   $scope.refresh();
 });
 

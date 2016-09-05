@@ -60,4 +60,4 @@ class AccountingMetric(DBMetric):
                 ORDER BY month""", locals())
             for row in cursor.fetchall():
                 ret[row["month"]] = row["amount"]
-            return sorted(ret.items(), key=lambda (k, v): k)
+            return sorted(ret.items(), key=lambda k_v: k_v[0])

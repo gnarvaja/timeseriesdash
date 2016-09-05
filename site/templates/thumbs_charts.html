@@ -1,0 +1,27 @@
+<div class="row navbar">
+  <div class="col-md-4">
+    <select class="form-control" ng-model="$parent.$parent.periods_text" ng-change="refresh()">
+      <option ng-repeat="choice in periodChoices" value="{{choice.value}}">{{choice.name}}</option>
+    </select>
+  </div>
+  <div class="col-md-8">
+    <div class="navbar-form" role="search">
+      <div ui-slider min="0" max="30" ng-model="$parent.$parent.periods_back"></div>
+      <span class="pull-right badge">{{ metrics[0].get_current_period() }}</span>
+    </div>
+  </div>
+</div>
+<div class="row" ng-if="expand_metric_names(pill.thumb_metrics)">
+  <div class="col-md-4" ng-repeat="metric_name in expand_metric_names(pill.thumb_metrics)">
+    <thumbwidget metric="getMetric(metric_name)"/>
+  </div>
+</div>
+<div class="row">
+  <div ng-repeat="chart in pill.charts" class="{{chart.class}}">
+    <canvas id="line" class="chart chart-line"
+      chart-data="get_chart_data(expand_metric_names(chart.metrics))"
+      chart-labels="get_chart_labels(expand_metric_names(chart.metrics))"
+      chart-series="get_chart_series(expand_metric_names(chart.metrics))"
+      >
+    </canvas>
+</div>

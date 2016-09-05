@@ -16,10 +16,13 @@ def main(argv):
 
     ffrom = datetime.date(*map(int, argv[2].split("-")))
     tto = datetime.date(*map(int, argv[3].split("-")))
+    extra_args = argv[4:]
+
+    skip_metrics = "--skip-metrics" in extra_args
 
     config = yaml.load(open(config_file))
 
-    js_metrics = codecs.open(config["js_metrics"], "wt", encoding="utf-8")
+    js_metrics = codecs.open(config["js_metrics"], "w", encoding="utf-8")
 
     js_metrics.write("metrics = [\n")
 
@@ -29,10 +32,11 @@ def main(argv):
             print("Error no existe la métrica de tipo %s" % metric["type"], file=sys.stderr)
             sys.exit(3)
         metric_obj = metric_class(config, metric, metric["name"])
-        print("Generating metric %s" % metric["name"])
-        data = metric_obj.generate(ffrom, tto)
+        if not skip_metrics:
+            print("Generating metric %s" % metric["name"])
+            data = metric_obj.generate(ffrom, tto)
 
-        save_data(data, metric["name"], config)
+            save_data(data, metric["name"], config)
 
         js_metrics.write(metric_obj.js_line())
 
@@ -54,8 +58,9 @@ def main(argv):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print("Uso: %s <config.yaml> <from-AAAA-mm-dd> <to-AAAA-mm-dd>" % sys.argv[0], file=sys.stderr)
+    if len(sys.argv) < 4:
+        print("Uso: %s <config.yaml> <from-AAAA-mm-dd> <to-AAAA-mm-dd> [extra-args]" % sys.argv[0],
+              file=sys.stderr)
         sys.exit(1)
     try:
         main(sys.argv)

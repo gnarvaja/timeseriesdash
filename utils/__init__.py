@@ -2,6 +2,7 @@
 import datetime
 import json
 import os
+from six import string_types
 from dateutil.relativedelta import relativedelta
 from dateutil.parser import parse, parserinfo
 
@@ -107,7 +108,7 @@ def ensure_date(x):
         return x.date()
     elif isinstance(x, datetime.date):
         return x
-    elif isinstance(x, basestring):
+    elif isinstance(x, string_types):
         default = datetime.datetime.now().replace(day=1)  # Si no está especificado el día toma el 1ero
                                                           # Si no está mes u año, toma los actuales
         try:
@@ -133,7 +134,7 @@ def parse_float(x):
     >>> parse_float("123 %")
     1.23
     """
-    if isinstance(x, basestring):
+    if isinstance(x, string_types):
         x = x.replace("$", "").strip()
         if "%" in x:
             return parse_float(x.replace("%", "")) / 100.0

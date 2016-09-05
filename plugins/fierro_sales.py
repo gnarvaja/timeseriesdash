@@ -54,7 +54,7 @@ class FierroSalesMetric(DBMetric):
             cursor.execute(query, {"sucursal_id": sucursal_id, 'ffrom': new_ffrom, 'tto': new_tto})
             for row in cursor.fetchall():
                 ret[ensure_date(row["period"])] = row["amount"]
-            totalized_movs = sorted(ret.items(), key=lambda (k, v): k)
+            totalized_movs = sorted(ret.items(), key=lambda k_v: k_v[0])
 
         accumulate(totalized_movs, sum_type)
 

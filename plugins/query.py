@@ -33,7 +33,7 @@ class QueryMetric(DBMetric):
             for missing in missing_dates:
                 ret[missing] = 0
 
-            totalized_movs = sorted(ret.items(), key=lambda (k, v): k)
+            totalized_movs = sorted(ret.items(), key=lambda k_v: k_v[0])
 
         accumulate(totalized_movs, sum_type)
 
@@ -68,7 +68,7 @@ class SingleValueQueryMetric(QueryMetric):
                 else:
                     ret[period_from] = rrow["value"]
 
-            totalized_movs = sorted(ret.items(), key=lambda (k, v): k)
+            totalized_movs = sorted(ret.items(), key=lambda k_v: k_v[0])
 
         accumulate(totalized_movs, sum_type)
 

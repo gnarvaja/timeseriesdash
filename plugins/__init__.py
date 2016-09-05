@@ -1,11 +1,11 @@
 import inspect
-from base import Metric
-from fierro_accounting import *
-from fierro_sales import *
-from calculated import *
-from file import *
-from query import *
-from google import *
+from .base import Metric
+from .fierro_accounting import *
+from .fierro_sales import *
+from .calculated import *
+from .file import *
+from .query import *
+from .google import *
 
 
 def get_metric_class(type_name):

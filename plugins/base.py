@@ -57,6 +57,10 @@ class Metric(object):
 class DBMetric(Metric):
     def __init__(self, *args, **kargs):
         super(DBMetric, self).__init__(*args, **kargs)
-        dbname = self.config.get("database", self.global_config.get("default_database"))
-        self.db = DBFactory.get_db(self.global_config, dbname)
+        self.dbname = self.config.get("database", self.global_config.get("default_database"))
 
+    @property
+    def db(self):
+        if not hasattr(self, "_db"):
+            self._db = DBFactory.get_db(self.global_config, self.dbname)
+        return self._db
