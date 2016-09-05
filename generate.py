@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+from __future__ import print_function
 import datetime
 import json
 import sys
@@ -25,10 +26,10 @@ def main(argv):
     for metric in config["metrics"]:
         metric_class = plugins.get_metric_class(metric["type"])
         if not metric_class:
-            print >>sys.stderr, "Error no existe la métrica de tipo %s" % metric["type"]
+            print("Error no existe la métrica de tipo %s" % metric["type"], file=sys.stderr)
             sys.exit(3)
         metric_obj = metric_class(config, metric, metric["name"])
-        print "Generating metric %s" % metric["name"]
+        print("Generating metric %s" % metric["name"])
         data = metric_obj.generate(ffrom, tto)
 
         save_data(data, metric["name"], config)
@@ -45,7 +46,7 @@ def main(argv):
     js_metrics.write("];\n")
     js_metrics.write("\n")
 
-    print "Saving js_metrics file"
+    print("Saving js_metrics file")
     js_metrics.write("periodChoices = [\n")
     for period_choice in config["period_choices"]:
         js_metrics.write('    {value: %(value)s, name: "%(name)s"},\n' % period_choice)
@@ -54,10 +55,10 @@ def main(argv):
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        print >>sys.stderr, "Uso: %s <config.yaml> <from-AAAA-mm-dd> <to-AAAA-mm-dd>" % sys.argv[0]
+        print("Uso: %s <config.yaml> <from-AAAA-mm-dd> <to-AAAA-mm-dd>" % sys.argv[0], file=sys.stderr)
         sys.exit(1)
     try:
         main(sys.argv)
     finally:
         DBFactory.close_all()
-    print "End"
+    print("End")
