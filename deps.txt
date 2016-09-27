@@ -6,3 +6,4 @@ python-dateutil
 gspread
 oauth2client
 quandl
+googleanalytics

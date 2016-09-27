@@ -36,7 +36,7 @@ class Metric(object):
         }
 
     def _reused_data(self, ffrom, tto):
-        reuse = self.config.get("reuse", False)
+        reuse = self.config.get("reuse", self.global_config.get("default_reuse", False))
         period_type = self.get_period_type()
         if reuse:
             old_data = read_data(self.name, self.global_config)

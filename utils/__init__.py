@@ -160,6 +160,15 @@ def parse_float(x):
         return float(x)
 
 
+def date_to_period(period_type, date):
+    if period_type == "day":
+        return date
+    elif period_type == "month":
+        return date.replace(day=1)
+    elif period_type == "week":
+        return date - datetime.timedelta(days=date.weekday())
+
+
 def accumulate(totalized_movs, sum_type):
     """Acumula los totales de acuerdo a sum_type
 

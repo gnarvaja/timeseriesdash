@@ -8,14 +8,16 @@ class QueryMetric(DBMetric):
 
     def _get_query(self):
         filename = self.config.get("file", "%s.sql" % self.name)
-        return open(os.path.expanduser(filename)).read()
+        if filename[0] in "./~":
+            return open(os.path.expanduser(filename)).read()
+        else:
+            filename = os.path.join(self.global_config.get("sql_dir", "."), filename)
+            return open(os.path.expanduser(filename)).read()
 
     def generate(self, ffrom, tto):
-        period_type = self.config["period"]
+        period_type = self.get_period_type()
 
-        sum_type = self.config["sum_type"]
-
-        ret = {}
+        sum_type = self.config.get("sum_type", "sum")
 
         ret, new_ffrom, new_tto = self._reused_data(ffrom, tto)
         if new_ffrom is None and new_tto is None:  # full reuse - ret == old_data
@@ -46,11 +48,9 @@ class SingleValueQueryMetric(QueryMetric):
     metric_type = "single_query"
 
     def generate(self, ffrom, tto):
-        period_type = self.config["period"]
+        period_type = self.get_period_type()
 
-        sum_type = self.config["sum_type"]
-
-        ret = {}
+        sum_type = self.config.get("sum_type", "sum")
 
         ret, new_ffrom, new_tto = self._reused_data(ffrom, tto)
         if new_ffrom is None and new_tto is None:  # full reuse - ret == old_data

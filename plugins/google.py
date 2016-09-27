@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 "Script que sube las métricas a la planilla"
+import datetime
 import gspread
 from plugins.base import Metric
 from utils.oauth2 import OA2CredentialsFactory
-from utils import ensure_date, generate_date_series, parse_float
+from utils.ga_profile import GAProfilesFactory
+from utils import ensure_date, generate_date_series, parse_float, date_to_period
 
 
 class GoogleSpreadMetric(Metric):
@@ -42,4 +44,32 @@ class GoogleSpreadMetric(Metric):
             data[ensure_date(v)] = parse_float(data_values[i] or "0")
 
         return [{"label": d.strftime("%Y-%m-%d"), "data": data.get(d, 0)}
+                for d in generate_date_series(ffrom, tto, period_type)]
+
+
+class GoogleAnalyticsMetric(Metric):
+    metric_type = "googleanalytics"
+
+    def __init__(self, *args, **kargs):
+        super(GoogleAnalyticsMetric, self).__init__(*args, **kargs)
+        profile_name = self.config.get("profile", self.global_config.get("default_ga_profile"))
+        self.profile = GAProfilesFactory.get_profile(self.global_config, profile_name)
+        self.metric_name = self.config.get("metric", self.config.get("name"))
+
+    def generate(self, ffrom, tto):
+        period_type = self.get_period_type()
+
+        ret, new_ffrom, new_tto = self._reused_data(ffrom, tto)
+        if new_ffrom is None and new_tto is None:  # full reuse - ret == old_data
+            return ret
+        values = self.profile.core.query.metrics(self.metric_name).daily(
+            new_ffrom, days=(new_tto - new_ffrom).days + 1).values
+
+        # Agrupo por período
+        for i, v in enumerate(values):
+            date = new_ffrom + datetime.timedelta(days=i)
+            period_start = date_to_period(period_type, date)
+            ret[period_start] = v + ret.get(period_start, 0)
+
+        return [{"label": d.strftime("%Y-%m-%d"), "data": ret.get(d, 0)}
                 for d in generate_date_series(ffrom, tto, period_type)]
