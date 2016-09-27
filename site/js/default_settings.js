@@ -1,5 +1,4 @@
 constants = {
-  chart_datasetOverride: [{ yAxisID: 'y-axis-left' }, { yAxisID: 'y-axis-right' }, { yAxisID: 'y-axis-left' }],
   chart_options: {
       scales: {
         yAxes: [

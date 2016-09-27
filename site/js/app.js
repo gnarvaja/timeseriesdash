@@ -97,7 +97,61 @@ app.controller("ComparativeMetricsCtrl", function ($scope, $http, localStorageSe
     }
     return $scope[varname];
   };
+  $scope.get_chart_colors = function (metric_names) {
+    var varname = "chart_colors_" + metric_names.join("_");
+    if (!angular.isDefined($scope[varname])) {
+      $scope[varname] = _.map(metric_names, function (metric_name) {
+        return $scope.getMetric(metric_name).color;
+      });
+    }
+    return $scope[varname];
+  };
+  $scope.get_chart_dataset_override = function (yaxis) {
+    var varname = angular.isDefined(yaxis) ? "chart_dataset_override_" + yaxis : "chart_dataset_override_undefined";
+    if (!angular.isDefined($scope[varname])) {
+      if (!angular.isDefined(yaxis))
+        $scope[varname] = [];
+      else
+        $scope[varname] = _.map(yaxis, function (side) {
+          if (side === "r")
+            return {yAxisID: "y-axis-right"};
+          else
+            return {yAxisID: "y-axis-left"};
+        });
+    }
+    return $scope[varname];
+  };
+  $scope.get_chart_options = function (yaxis) {
+    var varname = angular.isDefined(yaxis) ? "chart_options_" + yaxis : "chart_options_undefined";
+    if (!angular.isDefined($scope[varname])) {
+      if (!angular.isDefined(yaxis))
+        $scope[varname] = [];
+      else {
+        $scope[varname] = {
+          scales: {
+            yAxes: [
+              {
+                id: 'y-axis-left',
+                type: 'linear',
+                display: true,
+                position: 'left'
+              },
+              {
+                id: 'y-axis-right',
+                type: 'linear',
+                display: true,
+                position: 'right'
+              }
+            ]
+          }
+        };
+      }
+    }
+    return $scope[varname];
+  };
+
   $scope.constants = constants;
+
   $scope.getMetric = function(metricKey) {
     return _.find($scope.metrics, function (m) { return m.key == metricKey; });
   };
@@ -105,10 +159,13 @@ app.controller("ComparativeMetricsCtrl", function ($scope, $http, localStorageSe
   $scope.expand_metric_names = function (metric_names) {
     if (_.isArray(metric_names))
       return metric_names;
-    var regexp = new RegExp(metric_names);
-    var ret = _.pluck(_.filter($scope.metrics, function (m) { return m.key.match(regexp) !== null; }),
-                      "key");
-    return ret;
+    var varname = "_expand_metric_names_" + metric_names;
+    if (!angular.isDefined($scope[varname])) {
+      var regexp = new RegExp(metric_names);
+      $scope[varname] = _.pluck(_.filter($scope.metrics, function (m) { return m.key.match(regexp) !== null; }),
+                                "key");
+    }
+    return $scope[varname];
   };
 
   $scope.save = function () {
