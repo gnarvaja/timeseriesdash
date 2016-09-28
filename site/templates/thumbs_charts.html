@@ -12,7 +12,7 @@
   </div>
 </div>
 <div class="row" ng-if="expand_metric_names(pill.thumb_metrics)">
-  <div class="col-md-4" ng-repeat="metric_name in expand_metric_names(pill.thumb_metrics)">
+  <div ng-class="pill.thumb_class || 'col-md-4'" ng-repeat="metric_name in expand_metric_names(pill.thumb_metrics)">
     <thumbwidget metric="getMetric(metric_name)"/>
   </div>
 </div>

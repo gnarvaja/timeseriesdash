@@ -57,6 +57,8 @@ datetime.date(2015, 3, 1)]
 datetime.date(2015, 1, 15)]
     """
     delta = get_delta(period)
+    if period == "month":
+        ffrom = date_to_period(period, ffrom)
     yield ensure_date(ffrom)
     while True:
         ffrom += delta

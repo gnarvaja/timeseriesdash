@@ -19,14 +19,14 @@ class GoogleSpreadMetric(Metric):
         self.sheet = self.config.get("sheet", "sheet1")
 
     def generate(self, ffrom, tto):
-        gc = gspread.authorize(self.credentials)
-        wks = getattr(gc.open(self.spreadsheet), self.sheet)
-
         period_type = self.get_period_type()
 
         ret, new_ffrom, new_tto = self._reused_data(ffrom, tto)
         if new_ffrom is None and new_tto is None:  # full reuse - ret == old_data
             return ret
+
+        gc = gspread.authorize(self.credentials)
+        wks = getattr(gc.open(self.spreadsheet), self.sheet)
 
         date_column = self.config.get("date_column", 1)
         data_column = self.config.get("data_column", 2)
