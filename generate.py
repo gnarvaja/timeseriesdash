@@ -7,7 +7,7 @@ import sys
 import yaml
 import plugins
 import codecs
-from utils import save_data
+from utils import save_data, get_metrics
 from utils.db import DBFactory
 
 
@@ -26,7 +26,7 @@ def main(argv):
 
     js_metrics.write("metrics = [\n")
 
-    for metric in config["metrics"]:
+    for metric in get_metrics(config):
         metric_class = plugins.get_metric_class(metric["type"])
         if not metric_class:
             print("Error no existe la métrica de tipo %s" % metric["type"], file=sys.stderr)

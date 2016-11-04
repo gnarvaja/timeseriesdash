@@ -8,7 +8,7 @@ from dateutil.parser import parse, parserinfo
 
 
 def _get_metric(metric_name, config):
-    ret = [m for m in config["metrics"] if m["name"] == metric_name]
+    ret = [m for m in get_metrics(config) if m["name"] == metric_name]
     if ret:
         return ret[0]
 
@@ -40,7 +40,38 @@ def read_data(metric_name, config):
 
 def get_metric_names(global_config):
     "Devuelve la lista de todas las métricas disponibles"
-    return [m["name"] for m in global_config["metrics"]]
+    return [m["name"] for m in get_metrics(global_config)]
+
+
+def expand_template(metric, template):
+    params = dict(template.get("defaults", {}))
+    aux = dict(metric)
+    del aux["template"]
+    params.update(aux)
+    for m in template["metrics"]:
+        new_metric = dict(m)
+        for k, v in new_metric.items():
+            # Reemplazo $parametro por el valor
+            for param_name, param_value in params.items():
+                param_marker = "$" + param_name
+                if isinstance(v, str) and param_marker in v:
+                    v = v.replace(param_marker, param_value)
+            new_metric[k] = v
+        yield new_metric
+
+
+def get_metrics(global_config):
+    ret = []
+    for metric in global_config["metrics"]:
+        if "template" in metric:
+            template = [t for t in global_config["metric-templates"] if t["name"] == metric["template"]]
+            if not template or len(template)>1:
+                raise RuntimeError("Metric Template %s not found" % metric["template"])
+            template = template[0]
+            ret.extend(expand_template(metric, template))
+        else:
+            ret.append(metric)
+    return ret
 
 
 def generate_date_series(ffrom, tto, period):
