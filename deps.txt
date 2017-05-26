@@ -4,6 +4,6 @@ paramiko
 sshtunnel
 python-dateutil
 gspread
-oauth2client
+oauth2client==1.5.2
 quandl
 googleanalytics

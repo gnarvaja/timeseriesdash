@@ -43,20 +43,45 @@ def get_metric_names(global_config):
     return [m["name"] for m in get_metrics(global_config)]
 
 
+def _replace_parameters(obj, params):
+    if isinstance(obj, dict):
+        ret = dict(obj)
+        for k, v in ret.items():
+            if isinstance(v, dict) or isinstance(v, list) or isinstance(v, tuple):
+                ret[k] = _replace_parameters(v, params)
+            elif isinstance(v, str):
+                ret[k] = _replace_parameters(v, params)
+        return ret
+    elif isinstance(obj, list):
+        ret = list(obj)
+        for i, v in enumerate(ret):
+            ret[i] = _replace_parameters(v, params)
+        return ret
+    elif isinstance(obj, tuple):
+        ret = list(obj)
+        for i, v in enumerate(ret):
+            ret[i] = _replace_parameters(v, params)
+        return tuple(ret)
+    elif isinstance(obj, str):
+        # Reemplazo $parametro por el valor
+        for param_name, param_value in sorted(params.items(), key=lambda x: -len(x[0])):
+            param_marker = "$" + param_name
+            if param_marker == obj:
+                return param_value
+            elif param_marker in obj:
+                return obj.replace(param_marker, param_value)
+        return obj
+    else:
+        return obj
+
+
 def expand_template(metric, template):
     params = dict(template.get("defaults", {}))
     aux = dict(metric)
     del aux["template"]
     params.update(aux)
     for m in template["metrics"]:
-        new_metric = dict(m)
-        for k, v in new_metric.items():
-            # Reemplazo $parametro por el valor
-            for param_name, param_value in params.items():
-                param_marker = "$" + param_name
-                if isinstance(v, str) and param_marker in v:
-                    v = v.replace(param_marker, param_value)
-            new_metric[k] = v
+        new_metric = _replace_parameters(m, params)
         yield new_metric
 
 
