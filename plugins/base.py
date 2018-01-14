@@ -46,7 +46,11 @@ class Metric(object):
             if not missing_dates:
                 return old_data, None, None
             new_ffrom = missing_dates[0]
-            new_tto = missing_dates[-1] + relativedelta(**{"%ss" % period_type: 1}) - relativedelta(days=1)
+            if period_type == "weekS":
+                delta = relativedelta(days=7)
+            else:
+                delta = relativedelta(**{"%ss" % period_type: 1})
+            new_tto = missing_dates[-1] + delta - relativedelta(days=1)
         else:
             new_ffrom = ffrom
             new_tto = tto

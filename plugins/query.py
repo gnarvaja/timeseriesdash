@@ -30,17 +30,18 @@ class QueryMetric(DBMetric):
         query = self._get_query()
 
         with self.db.cursor() as cursor:
-            params = {'ffrom': period_from, 'tto': period_to, "period": period_type}
+            params = {'ffrom': new_ffrom, 'tto': new_tto, "period": period_type}
             params.update(self.get_params())
             try:
                 cursor.execute(query, params)
             except:
                 import ipdb; ipdb.set_trace()
+                raise
             for row in cursor.fetchall():
                 ret[ensure_date(row["period"])] = row["value"]
             # Fill missing dates with zeros
             missing_dates = [d for d in generate_date_series(new_ffrom, new_tto, period_type)
-                             if not d in ret]
+                             if d not in ret]
             for missing in missing_dates:
                 ret[missing] = 0
 

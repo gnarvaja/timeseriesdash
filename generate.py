@@ -7,20 +7,64 @@ import sys
 import yaml
 import plugins
 import codecs
-from utils import save_data, get_metrics
+from utils import save_data, get_metrics, read_data, get_metric_names
 from utils.db import DBFactory
+from utils.oauth2 import OA2CredentialsFactory
+import gspread
+
+
+def upload(config, argv):
+    credentials_name = argv[3]
+    spreadsheet = argv[4]
+#    sheet = argv[5]
+
+    credentials = OA2CredentialsFactory.get_credentials(config, credentials_name)
+    gc = gspread.authorize(credentials)
+    wks = getattr(gc.open(spreadsheet), "sheet1")
+
+    weeks = wks.row_values(3)
+    metrics = wks.col_values(1)
+    all_metrics = get_metric_names(config)
+
+    cells = []
+
+    for row, metric in enumerate(metrics):
+        metric = metric.strip()
+        if not metric:
+            continue
+        if metric not in all_metrics:
+            print("WARNING: %s no se encuentra en las métricas" % metric)
+            continue
+        all_metrics.remove(metric)
+        data = read_data(metric, config)
+        print("uploading %s" % metric)
+        for data_item in data:
+            if not data_item["label"] in weeks:
+                continue
+            col = weeks.index(data_item["label"])
+            #import ipdb; ipdb.set_trace()
+            #wks.update_cell(row + 1, col + 1, data_item["data"])
+            cell = wks.cell(row + 1, col + 1)
+            cell.value = data_item["data"]
+            cells.append(cell)
+
+    wks.update_cells(cells)
+    print("Métricas no subidas: %s" % all_metrics)
 
 
 def main(argv):
     config_file = argv[1]
+
+    config = yaml.load(open(config_file))
+
+    if argv[2] == "upload":
+        return upload(config, argv)
 
     ffrom = datetime.date(*map(int, argv[2].split("-")))
     tto = datetime.date(*map(int, argv[3].split("-")))
     extra_args = argv[4:]
 
     skip_metrics = "--skip-metrics" in extra_args
-
-    config = yaml.load(open(config_file))
 
     js_metrics = codecs.open(config["js_metrics"], "w", encoding="utf-8")
 

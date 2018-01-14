@@ -90,7 +90,7 @@ def get_metrics(global_config):
     for metric in global_config["metrics"]:
         if "template" in metric:
             template = [t for t in global_config["metric-templates"] if t["name"] == metric["template"]]
-            if not template or len(template)>1:
+            if not template or len(template) > 1:
                 raise RuntimeError("Metric Template %s not found" % metric["template"])
             template = template[0]
             ret.extend(expand_template(metric, template))
@@ -128,6 +128,8 @@ def get_delta(period):
         delta = relativedelta(months=1)
     elif period == "week":
         delta = relativedelta(weeks=1)
+    elif period == "weekS":
+        delta = relativedelta(days=7)
     elif period == "day":
         delta = relativedelta(days=1)
     elif period == "year":
@@ -223,6 +225,11 @@ def date_to_period(period_type, date):
         return date
     elif period_type == "month":
         return date.replace(day=1)
+    elif period_type == "weekS":
+        if date.weekday() == 6:
+            return date
+        else:
+            return date - datetime.timedelta(days=date.weekday() + 1)
     elif period_type == "week":
         return date - datetime.timedelta(days=date.weekday())
 
