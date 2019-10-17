@@ -25,7 +25,7 @@ class RemoteDictContextConnection(DictContextConnection):
         if hasattr(self, "_tunnel"):
             try:
                 self._tunnel.stop()
-            except:
+            except Exception:
                 pass
         return super(RemoteDictContextConnection, self).close(*args, **kargs)
 
@@ -40,6 +40,7 @@ class DBFactory:
         user = db_config.get("user", None)
         password = db_config.get("password", None)
         port = db_config.get("port", None)
+        driver = db_config.get("driver", "postgresql")
 
         if "remote" in db_config:
             from utils.remote import RemoteConnections
@@ -54,9 +55,22 @@ class DBFactory:
         else:
             connection_factory = DictContextConnection
 
-        ret = psycopg2.connect(database=dbname, host=host, user=user, password=password,
-                               port=port,
-                               connection_factory=connection_factory)
+        connect_kargs = dict(
+            database=dbname, host=host, user=user, password=password,
+            port=port
+        )
+
+        if driver == "postgresql":
+            connect = psycopg2.connect
+            connect_kargs["connection_factory"] = connection_factory
+        else:
+            import MySQLdb
+            import MySQLdb.cursors
+            connect = MySQLdb.connect
+            connect_kargs["cursorclass"] = MySQLdb.cursors.DictCursor
+
+        ret = connect(**connect_kargs)
+
         if "remote" in db_config:
             ret._tunnel = remote_tunnel
         return ret

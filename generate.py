@@ -4,6 +4,8 @@ from __future__ import print_function
 import datetime
 import json
 import sys
+import os
+import re
 import yaml
 import plugins
 import codecs
@@ -11,6 +13,11 @@ from utils import save_data, get_metrics, read_data, get_metric_names
 from utils.db import DBFactory
 from utils.oauth2 import OA2CredentialsFactory
 import gspread
+from environs import Env
+
+env = Env()
+
+env.read_env(os.getenv("ENV_PATH") or None)
 
 
 def upload(config, argv):
@@ -52,10 +59,30 @@ def upload(config, argv):
     print("Métricas no subidas: %s" % all_metrics)
 
 
+envvar_matcher = re.compile(r'\$\{([A-Za-z0-9_]+)(:-[^\}]*)?\}')
+
+
+def envvar_constructor(loader, node):
+    '''
+    Extract the matched value, expand env variable, and replace the match
+    ${REQUIRED_ENV_VARIABLE} or ${ENV_VARIABLE:-default}
+    '''
+    value = node.value
+    match = envvar_matcher.match(value)
+    env_var = match.group(1)
+    default_value = match.group(2)
+    if default_value is not None:
+        return env.str(env_var, default_value[2:]) + value[match.end():]
+    else:
+        return env.str(env_var) + value[match.end():]
+
+
 def main(argv):
     config_file = argv[1]
 
-    config = yaml.load(open(config_file))
+    yaml.add_implicit_resolver('!envvar', envvar_matcher, Loader=yaml.FullLoader)
+    yaml.add_constructor('!envvar', envvar_constructor, Loader=yaml.FullLoader)
+    config = yaml.load(open(config_file), Loader=yaml.FullLoader)
 
     if argv[2] == "upload":
         return upload(config, argv)
