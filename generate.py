@@ -15,10 +15,6 @@ from utils.oauth2 import OA2CredentialsFactory
 import gspread
 from environs import Env
 
-env = Env()
-
-env.read_env(os.getenv("ENV_PATH") or None)
-
 
 def upload(config, argv):
     credentials_name = argv[3]
@@ -67,6 +63,7 @@ def envvar_constructor(loader, node):
     Extract the matched value, expand env variable, and replace the match
     ${REQUIRED_ENV_VARIABLE} or ${ENV_VARIABLE:-default}
     '''
+    global env
     value = node.value
     match = envvar_matcher.match(value)
     env_var = match.group(1)
@@ -77,8 +74,26 @@ def envvar_constructor(loader, node):
         return env.str(env_var) + value[match.end():]
 
 
+def _get_env_path(config_file):
+    env_path = os.getenv("ENV_PATH")
+    if env_path:
+        return env_path
+
+    config_dir = os.path.dirname(config_file)
+    if os.path.exists(os.path.join(config_dir, ".env")):
+        return config_dir
+
+    return None
+
+
 def main(argv):
     config_file = argv[1]
+
+    global env
+
+    env = Env()
+
+    env.read_env(_get_env_path(config_file))
 
     yaml.add_implicit_resolver('!envvar', envvar_matcher, Loader=yaml.FullLoader)
     yaml.add_constructor('!envvar', envvar_constructor, Loader=yaml.FullLoader)
